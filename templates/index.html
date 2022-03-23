@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="../static/scripts/socket.io.js"></script>
+    <script src="../static/scripts/geom-utils.js"></script>
+    <script src="../static/scripts/kanvas-utils.js"></script>
+    <script src="../static/scripts/chart.js"></script>
+    <link rel="stylesheet" href="../static/style.css" />
+</head>
+
+<body>
+</body>
+<div class="title-bar">
+    <h1>3257 DRIVER STATION <span style="float:right; font-size:80%; margin-top:8px;">MADE BY KEITH BARTLETT :D</span></h1>
+</div>
+<div class="column-container">
+    <div class="side-container">
+        <div class="charts-container">
+            <div class="chart-container">
+                <h3>upper flywheel</h3>
+                <canvas class="chart" id="chart0" width="400" height="200"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>lower flywheel</h3>
+                <canvas class="chart" id="chart1" width="400" height="200"></canvas>
+            </div>
+        </div>
+        <div class="charts-container">
+            <div class="chart-container">
+                <h3>beep</h3>
+                <canvas class="chart" id="chart2" width="400" height="200"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>boop</h3>
+                <canvas class="chart" id="chart3" width="400" height="200"></canvas>
+            </div>
+        </div>
+        <div style="padding: 0 35px;">
+            <h1 style="width:100%; border-bottom: 3px solid; margin-bottom: 0;">INFO:</h1>
+            <ul class="info-list">
+                <li>
+                    <h2>ROBOT CONNECTED? <span style="float:right">NO</span></h2>
+                </li>
+                <li>
+                    <h2>ALLIANCE COLOR <span style="float:right">RED</span></h2>
+                </li>
+                <li>
+                    <h2>GAME TIME <span style="float:right">03:25.7</span></h2>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="cam-feed-container">
+        <img id="cam-feed" src="../static/deipat.png">
+        <img id="cam-feed-overlay" src="../static/crosshair.png">
+    </div>
+</div>
+
+<script>
+    let socket = io();
+    socket.on('video_feed', function(msg) {
+        console.log(msg);
+        document.getElementById('cam-feed').src = "data:image/jpeg;base64," + msg.img;
+    });
+    const refreshRate = 20;
+    const bounds = {
+        minx: 0,
+        maxx: 10,
+        miny: -10,
+        maxy: 10,
+    };
+    let ch0 = new Chart("chart0", bounds);
+    let ch1 = new Chart("chart1", bounds);
+    let ch2 = new Chart("chart2", bounds);
+    let ch3 = new Chart("chart3", bounds);
+    ch0.addPointToSeries(0, new Point(ch0.bounds.maxx, 0));
+    ch1.addPointToSeries(0, new Point(ch1.bounds.maxx, 0));
+    ch2.addPointToSeries(0, new Point(ch2.bounds.maxx, 0));
+    ch3.addPointToSeries(0, new Point(ch3.bounds.maxx, 0));
+
+    let chs = [ch0, ch1, ch2, ch3];
+    let i = 0;
+    setInterval(function() {
+        if (socket.connected)
+            socket.emit('video_feed', {});
+    }, 50);
+    setInterval(function() {
+        for (var j = 0; j < chs.length; j++) {
+            chs[j].addTimeSeriesPoint(Math.max(Math.min(chs[j].series[0].y_data[chs[j].series[0].y_data.length - 1] + (Math.random() - 0.5), 6), -6), refreshRate);
+            chs[j].render();
+        }
+
+        i += 1;
+    }, refreshRate);
+</script>
+
+</html>

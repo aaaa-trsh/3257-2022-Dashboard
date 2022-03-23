@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+h3 {
+    padding: 2px;
+    margin: 1px;
+    border-bottom: 2px solid red;
+}
+
+.title-bar {
+    height: 40px;
+    overflow: hidden;
+    background-color: #000;
+    color: white;
+    margin-bottom: 10px;
+    padding: 0 50px;
+    border-bottom: 3px solid red;
+}
+
+.title-bar h1 {
+    font-weight: 800;
+    font-style: italic;
+    margin-top: 7px;
+}
+
+.column-container {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.cam-feed-container {
+    display: inline-block;
+    flex: 0;
+    width: 1000px;
+    position: relative;
+}
+
+.chart-container {
+    /* margin: 0 auto; */
+    /* display: flex; */
+    /* width: 100%; */
+    padding: 2px;
+    display: table-cell;
+}
+
+.chart {
+    /* border: 1px solid #000; */
+    display: block;
+    width: calc(100% - 2px);
+}
+
+.charts-container {
+    margin: 0 auto;
+    /* display: table; */
+    display: inline-flex;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-grow: 1;
+}
+
+#cam-feed {
+    margin: 0 auto;
+    width: inherit;
+    /* display: flex; */
+    aspect-ratio: 4/3;
+}
+
+#cam-feed-overlay {
+    position: absolute;
+    width: inherit;
+    aspect-ratio: 4/3;
+    /* opacity: 0.3; */
+    top: 0;
+    left: 0;
+}
+
+.info-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.info-list li {
+    margin: 0;
+    padding: 0;
+}
+
+.info-list li h2 {
+    margin: 0;
+    padding: 4px;
+}
+
+.info-list :nth-child(2) {
+    background-color: #eee;
+}
